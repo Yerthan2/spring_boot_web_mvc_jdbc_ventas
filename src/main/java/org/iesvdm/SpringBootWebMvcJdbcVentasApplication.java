@@ -3,7 +3,9 @@ package org.iesvdm;
 import java.util.Optional;
 
 import org.iesvdm.dao.ClienteDAO;
+import org.iesvdm.dao.ComercialDAO;
 import org.iesvdm.modelo.Cliente;
+import org.iesvdm.modelo.Comercial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +19,10 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner{
 
 	@Autowired
 	private ClienteDAO clienteDAO;
-	
+
+	@Autowired
+	private ComercialDAO comercialDAO;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootWebMvcJdbcVentasApplication.class, args);
 		
@@ -71,7 +76,60 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner{
 		log.info("************************************");
 		log.info("*FIN: Prueba de arranque ClienteDAO*");
 		log.info("************************************");
-		
+
+
+		// Parte De Comercial
+
+
+		log.info("*******************************");
+		log.info("*Prueba de arranque ComercialDAO*");
+		log.info("*******************************");
+
+		comercialDAO.getAll().forEach(c -> log.info("Comercial: {}", c));
+
+		int id2 = 1;
+		Optional<Comercial> comercial = comercialDAO.find(id);
+
+		if (comercial.isPresent()) {
+			log.info("Comercial {}: {}", id2, comercial.get());
+
+			String nombreOld = comercial.get().getNombre();
+
+			comercial.get().setNombre("Jose M");
+
+			comercialDAO.update(comercial.get());
+
+			comercial = comercialDAO.find(id2);
+
+			log.info("Comercial {}: {}", id2, comercial.get());
+
+			//Volvemos a cargar el nombre antiguo..
+			comercial.get().setNombre(nombreOld);
+			comercialDAO.update(comercial.get());
+
+		}
+
+		// Como es un cliente nuevo a persistir, id a 0
+		Comercial comercialNew = new Comercial(0, "Jose M", "Martín", null, 0.10f);
+
+		//create actualiza el id
+		comercialDAO.create(comercialNew);
+
+		log.info("Comercial nuevo con id = {}", comercialNew.getId());
+
+		comercialDAO.getAll().forEach(c -> log.info("comercial: {}", c));
+
+		//borrando por el id obtenido de create
+		comercialDAO.delete(comercialNew.getId());
+
+		comercialDAO.getAll().forEach(c -> log.info("Comercial: {}", c));
+
+		log.info("************************************");
+		log.info("*FIN: Prueba de arranque ComercialDAO*");
+		log.info("************************************");
+
 	}
+
+
 
 }

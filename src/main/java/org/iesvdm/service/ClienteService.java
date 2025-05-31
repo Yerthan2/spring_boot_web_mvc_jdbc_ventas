@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.iesvdm.dao.ClienteDAO;
 import org.iesvdm.modelo.Cliente;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,7 @@ public class ClienteService {
 	
 	//Se utiliza inyección automática por constructor del framework Spring.
 	//Por tanto, se puede omitir la anotación Autowired
-	//@Autowired
+	@Autowired
 	public ClienteService(ClienteDAO clienteDAO) {
 		this.clienteDAO = clienteDAO;
 	}

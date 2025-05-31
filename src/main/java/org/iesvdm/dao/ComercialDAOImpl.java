@@ -50,19 +50,48 @@ public class ComercialDAOImpl implements ComercialDAO {
 	@Override
 	public Optional<Comercial> find(int id) {
 		// TODO Auto-generated method stub
-		return Optional.empty();
+		Comercial fab =  jdbcTemplate
+				.queryForObject("SELECT * FROM comercial WHERE id = ?"
+						, (rs, rowNum) -> new Comercial(rs.getInt("id"),
+								rs.getString("nombre"),
+								rs.getString("apellido1"),
+								rs.getString("apellido2"),
+								rs.getFloat("comisión"))
+						, id
+				);
+
+		if (fab != null) {
+			return Optional.of(fab);}
+		else {
+			log.info("Comercial no encontrado.");
+			return Optional.empty(); }
 	}
 
 	@Override
 	public void update(Comercial cliente) {
 		// TODO Auto-generated method stub
+		int rows = jdbcTemplate.update("""
+										UPDATE comercial SET 
+														nombre = ?, 
+														apellido1 = ?, 
+														apellido2 = ?,
+														comisión = ?  
+												WHERE id = ?
+										""", cliente.getNombre()
+				, cliente.getApellido1()
+				, cliente.getApellido2()
+				, cliente.getComision()
+				, cliente.getId());
 
+		log.info("Update de Comercial con {} registros actualizados.", rows);
 	}
 
 	@Override
 	public void delete(long id) {
 		// TODO Auto-generated method stub
+		int rows = jdbcTemplate.update("DELETE FROM comercial WHERE id = ?", id);
 
+		log.info("Delete de comercial con {} registros eliminados.", rows);
 	}
 
 }
