@@ -1,5 +1,6 @@
 package org.iesvdm.dao;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,8 @@ import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import lombok.AllArgsConstructor;
@@ -24,16 +27,36 @@ public class ComercialDAOImpl implements ComercialDAO {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public void create(Comercial cliente) {
+	public void create(Comercial comercial) {
 		// TODO Auto-generated method stub
 
+
+		String sqlInsert = """
+							INSERT INTO ventas.comercial (nombre, apellido1, apellido2, comisión) 
+							VALUES  (     ?,         ?,         ?,       ?)
+						   """;
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		//Con recuperación de id generado
+		int rows = jdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(sqlInsert, new String[] { "id" });
+			int idx = 1;
+			ps.setString(idx++, comercial.getNombre());
+			ps.setString(idx++, comercial.getApellido1());
+			ps.setString(idx++, comercial.getApellido2());
+			ps.setDouble(idx++, comercial.getComision());
+			return ps;
+		},keyHolder);
+
+		comercial.setId(keyHolder.getKey().intValue());
+		log.info("Insertados {} registros.", rows);
 	}
 
 	@Override
 	public List<Comercial> getAll() {
 		
 		List<Comercial> listComercial = jdbcTemplate.query(
-                "SELECT * FROM comercial",
+                "SELECT * FROM ventas.comercial",
                 (rs, rowNum) -> new Comercial(rs.getInt("id"), 
                 							  rs.getString("nombre"), 
                 							  rs.getString("apellido1"),
@@ -51,7 +74,7 @@ public class ComercialDAOImpl implements ComercialDAO {
 	public Optional<Comercial> find(int id) {
 		// TODO Auto-generated method stub
 		Comercial fab =  jdbcTemplate
-				.queryForObject("SELECT * FROM comercial WHERE id = ?"
+				.queryForObject("SELECT * FROM ventas.comercial WHERE id = ?"
 						, (rs, rowNum) -> new Comercial(rs.getInt("id"),
 								rs.getString("nombre"),
 								rs.getString("apellido1"),
@@ -71,7 +94,7 @@ public class ComercialDAOImpl implements ComercialDAO {
 	public void update(Comercial cliente) {
 		// TODO Auto-generated method stub
 		int rows = jdbcTemplate.update("""
-										UPDATE comercial SET 
+										UPDATE ventas.comercial SET 
 														nombre = ?, 
 														apellido1 = ?, 
 														apellido2 = ?,
@@ -89,7 +112,8 @@ public class ComercialDAOImpl implements ComercialDAO {
 	@Override
 	public void delete(long id) {
 		// TODO Auto-generated method stub
-		int rows = jdbcTemplate.update("DELETE FROM comercial WHERE id = ?", id);
+		int row1 =jdbcTemplate.update("DELETE from ventas.pedido where id_comercial = ?", id );
+		int rows = jdbcTemplate.update("DELETE FROM ventas.comercial WHERE id = ?", id);
 
 		log.info("Delete de comercial con {} registros eliminados.", rows);
 	}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Cliente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container my-5">
+    <form th:action="@{/clientes/editar/__${cliente.id}__}" th:object="${cliente}" method="post">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Editar Cliente</h1>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{id}" readonly class="form-control-plaintext">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{nombre}" class="form-control" placeholder="Nombre">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Apellido 1</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{apellido1}" class="form-control" placeholder="Primer apellido">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Apellido 2</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{apellido2}" class="form-control" placeholder="Segundo apellido (opcional)">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Ciudad</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{ciudad}" class="form-control" placeholder="Ciudad">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Categoría</label>
+            <div class="col-sm-10">
+                <input type="number" min="1" th:field="*{categoria}" class="form-control" placeholder="Categoría (número)">
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

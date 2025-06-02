@@ -32,7 +32,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		
 							//Desde java15+ se tiene la triple quote """ para bloques de texto como cadenas.
 		String sqlInsert = """
-							INSERT INTO cliente (nombre, apellido1, apellido2, ciudad, categoría) 
+							INSERT INTO ventas.cliente (nombre, apellido1, apellido2, ciudad, categoría) 
 							VALUES  (     ?,         ?,         ?,       ?,         ?)
 						   """;
 		
@@ -70,7 +70,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	public List<Cliente> getAll() {
 		
 		List<Cliente> listFab = jdbcTemplate.query(
-                "SELECT * FROM cliente",
+                "SELECT * FROM ventas.cliente",
                 (rs, rowNum) -> new Cliente(rs.getInt("id"),
                 						 	rs.getString("nombre"),
                 						 	rs.getString("apellido1"),
@@ -92,8 +92,9 @@ public class ClienteDAOImpl implements ClienteDAO {
 	@Override
 	public Optional<Cliente> find(int id) {
 
+
 		Cliente fab =  jdbcTemplate
-				.queryForObject("SELECT * FROM cliente WHERE id = ?"
+				.queryForObject("SELECT * FROM ventas.cliente WHERE id = ?"
 						, (rs, rowNum) -> new Cliente(rs.getInt("id"),
 								rs.getString("nombre"),
 								rs.getString("apellido1"),
@@ -108,7 +109,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		else {
 			log.info("Cliente no encontrado.");
 			return Optional.empty(); }
-        
+
 	}
 	/**
 	 * Actualiza Cliente con campos del bean Cliente según ID del mismo.
@@ -117,7 +118,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	public void update(Cliente cliente) {
 		
 		int rows = jdbcTemplate.update("""
-										UPDATE cliente SET 
+										UPDATE ventas.cliente SET 
 														nombre = ?, 
 														apellido1 = ?, 
 														apellido2 = ?,
@@ -140,8 +141,9 @@ public class ClienteDAOImpl implements ClienteDAO {
 	 */
 	@Override
 	public void delete(long id) {
-		
-		int rows = jdbcTemplate.update("DELETE FROM cliente WHERE id = ?", id);
+
+		int row1 =jdbcTemplate.update("DELETE from ventas.pedido where id_cliente = ?", id );
+		int rows = jdbcTemplate.update("DELETE FROM ventas.cliente WHERE id = ?", id);
 		
 		log.info("Delete de Cliente con {} registros eliminados.", rows);		
 		
