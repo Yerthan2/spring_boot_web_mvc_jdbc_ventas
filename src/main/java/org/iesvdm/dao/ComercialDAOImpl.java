@@ -25,7 +25,12 @@ public class ComercialDAOImpl implements ComercialDAO {
 	//JdbcTemplate se inyecta por el constructor de la clase automáticamente
 	//
 	private JdbcTemplate jdbcTemplate;
-	
+
+	/**
+	 * Sirve para crear un nuevo comercial pasandole por parámetro, un comercial, y así obtenemos todos sus datos a
+	 * la hora de ingresarlo en la BBDD
+	 * @param comercial
+	 */
 	@Override
 	public void create(Comercial comercial) {
 		// TODO Auto-generated method stub
@@ -52,6 +57,10 @@ public class ComercialDAOImpl implements ComercialDAO {
 		log.info("Insertados {} registros.", rows);
 	}
 
+	/**
+	 * Obtiene todos los Comerciales, que se encuentran en la base de datos
+	 * @return
+	 */
 	@Override
 	public List<Comercial> getAll() {
 		
@@ -70,6 +79,11 @@ public class ComercialDAOImpl implements ComercialDAO {
         return listComercial;
 	}
 
+	/**
+	 * Función que devuelve un comercial, si devuelve null, devuelve null
+	 * @param id
+	 * @return
+	 */
 	@Override
 	public Optional<Comercial> find(int id) {
 		// TODO Auto-generated method stub
@@ -90,6 +104,10 @@ public class ComercialDAOImpl implements ComercialDAO {
 			return Optional.empty(); }
 	}
 
+	/**
+	 * Función que update los valores de Comercial
+	 * @param cliente
+	 */
 	@Override
 	public void update(Comercial cliente) {
 		// TODO Auto-generated method stub
@@ -109,6 +127,11 @@ public class ComercialDAOImpl implements ComercialDAO {
 		log.info("Update de Comercial con {} registros actualizados.", rows);
 	}
 
+	/**
+	 * Funcion que coge y borra según el id, primero cliente id de pedido
+	 * y luego el de comercial
+	 * @param id
+	 */
 	@Override
 	public void delete(long id) {
 		// TODO Auto-generated method stub
