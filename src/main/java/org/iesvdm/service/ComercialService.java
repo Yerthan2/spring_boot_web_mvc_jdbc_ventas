@@ -1,8 +1,10 @@
 package org.iesvdm.service;
 
 import org.iesvdm.dao.ComercialDAO;
+import org.iesvdm.dao.PedidoDAO;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
+import org.iesvdm.modelo.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,10 @@ import java.util.Optional;
 
 @Service
 public class ComercialService {
-
+    @Autowired
     private ComercialDAO comercialDAO;
+    @Autowired
+    private PedidoDAO pedidoDAO;
 
     @Autowired
     public ComercialService(ComercialDAO comercialDAO){this.comercialDAO = comercialDAO;}
@@ -38,4 +42,13 @@ public class ComercialService {
         long valorId = id.longValue();
         comercialDAO.delete(valorId);
     }
+
+    /**
+     *
+     */
+
+    public List<Pedido> obtenerPedidosPorComercial(int idComercial) {
+        return pedidoDAO.findByIdComercial(idComercial);
+    }
+
 }

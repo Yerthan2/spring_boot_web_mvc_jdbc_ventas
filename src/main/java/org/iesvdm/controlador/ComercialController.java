@@ -2,6 +2,7 @@ package org.iesvdm.controlador;
 
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
+import org.iesvdm.modelo.Pedido;
 import org.iesvdm.service.ComercialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,9 @@ public class ComercialController {
     @GetMapping("/{id}")
     public String detalle(Model model, @PathVariable int id){
         Comercial comercial = comercialService.findById(id);
+        List<Pedido> list = comercialService.obtenerPedidosPorComercial(id);
+
+        model.addAttribute("list", list);
         model.addAttribute("comercial", comercial);
         return "detalle-comercial";
     }

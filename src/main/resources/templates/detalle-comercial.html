@@ -47,6 +47,30 @@
             <input type="text" readonly class="form-control-plaintext" th:value="${comercial.comision}" />
         </div>
     </div>
+    <h2 class="mt-5">Pedidos del Comercial</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Cliente</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${list}">
+                <td th:text="${pedido.fecha}">2024-06-01</td>
+                <td th:text="${pedido.total}">999.99</td>
+                <td>
+                    <a th:href="@{/clientes/{id}(id=${pedido.id_cliente.id})}"
+                       th:text="${pedido.id_cliente.nombre + ' ' + pedido.id_cliente.apellido1}"
+                       target="_blank">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Bootstrap Bundle JS -->
