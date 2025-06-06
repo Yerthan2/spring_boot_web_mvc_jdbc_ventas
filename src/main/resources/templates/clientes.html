@@ -7,45 +7,49 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="container my-4">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h1>Clientes</h1>
-		<form action="/clientes/crear">
-			<button type="submit" class="btn btn-primary">Crear</button>
-		</form>
+<div class="container my-5">
+	<!-- Título y botón de crear -->
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h1 class="h3">Listado de Clientes</h1>
+		<a href="/clientes/crear" class="btn btn-primary">Crear Cliente</a>
 	</div>
 
+	<!-- Tabla de clientes -->
 	<div class="table-responsive">
-		<table class="table table-bordered table-hover align-middle">
-			<thead class="table-light">
+		<table class="table table-striped table-hover align-middle">
+			<thead class="table-dark text-center">
 			<tr>
-				<th scope="col" style="width: 5%;">Id</th>
-				<th scope="col" style="width: 15%;">Nombre</th>
-				<th scope="col" style="width: 15%;">Apellido1</th>
-				<th scope="col" style="width: 15%;">Apellido2</th>
-				<th scope="col" style="width: 15%;">Ciudad</th>
-				<th scope="col" style="width: 15%;">Categoría</th>
-				<th scope="col" style="width: 20%;">Acción</th>
+				<th scope="col">ID</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Apellido 1</th>
+				<th scope="col">Apellido 2</th>
+				<th scope="col">Ciudad</th>
+				<th scope="col">Categoría</th>
+				<th scope="col">Email</th>
+				<th scope="col">Acciones</th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody class="text-center">
 			<tr th:each="cliente : ${listaClientes}">
 				<td th:text="${cliente.id}">0</td>
-				<td th:text="${cliente.nombre}">nombre</td>
-				<td th:text="${cliente.apellido1}">apellido1</td>
-				<td th:text="${cliente.apellido2 ?: '&nbsp;'}">apellido2</td>
-				<td th:text="${cliente.ciudad}">ciudad</td>
-				<td th:text="${cliente.categoria}">categoría</td>
+				<td th:text="${cliente.nombre}">Nombre</td>
+				<td th:text="${cliente.apellido1}">Apellido1</td>
+				<td th:text="${cliente.apellido2}">Apellido2</td>
+				<td th:text="${cliente.ciudad}">Ciudad</td>
+				<td th:text="${cliente.categoria}">Categoría</td>
+				<td th:text="${cliente.email}">Email</td>
 				<td>
-					<form th:action="@{/clientes/{id}(id=${cliente.id})}" style="display: inline;">
-						<button type="submit" class="btn btn-sm btn-outline-primary me-1">Ver Detalle</button>
-					</form>
-					<form th:action="@{/clientes/editar/{id}(id=${cliente.id})}" style="display: inline;">
-						<button type="submit" class="btn btn-sm btn-outline-warning me-1">Editar</button>
-					</form>
-					<form th:action="@{/clientes/borrar/{id}(id=${cliente.id})}" method="get" style="display: inline;">
-						<button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-					</form>
+					<div class="btn-group" role="group">
+						<form th:action="@{/clientes/{id}(id=${cliente.id})}" method="get">
+							<button type="submit" class="btn btn-sm btn-outline-primary">Ver</button>
+						</form>
+						<form th:action="@{/clientes/editar/{id}(id=${cliente.id})}" method="get">
+							<button type="submit" class="btn btn-sm btn-outline-warning">Editar</button>
+						</form>
+						<form th:action="@{/clientes/borrar/{id}(id=${cliente.id})}" method="get">
+							<button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+						</form>
+					</div>
 				</td>
 			</tr>
 			</tbody>
@@ -53,7 +57,6 @@
 	</div>
 </div>
 
-<!-- Bootstrap JS Bundle (Popper incluido) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

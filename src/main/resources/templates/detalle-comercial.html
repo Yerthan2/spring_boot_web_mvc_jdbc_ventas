@@ -62,7 +62,7 @@
                 <td th:text="${pedido.fecha}">2024-06-01</td>
                 <td th:text="${pedido.total}">999.99</td>
                 <td>
-                    <a th:href="@{/clientes/{id}(id=${pedido.id_cliente.id})}"
+                    <a 
                        th:text="${pedido.id_cliente.nombre + ' ' + pedido.id_cliente.apellido1}"
                        target="_blank">
                     </a>

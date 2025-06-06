@@ -42,6 +42,7 @@ public class ComercialController {
         return new RedirectView("/comerciales");
     }
 
+
     @GetMapping("/{id}")
     public String detalle(Model model, @PathVariable int id){
         Comercial comercial = comercialService.findById(id);

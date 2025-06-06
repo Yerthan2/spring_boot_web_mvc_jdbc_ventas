@@ -26,7 +26,7 @@ public class PedidoDAOImplements implements PedidoDAO{
         SELECT 
             p.id, p.total, p.fecha,
             c.id AS c_id, c.nombre AS c_nombre, c.apellido1 AS c_apellido1, c.apellido2 AS c_apellido2,
-            c.ciudad, c.categoría,
+            c.ciudad, c.categoría, c.email as c_email,
             com.id AS com_id, com.nombre AS com_nombre, com.apellido1 AS com_apellido1,
             com.apellido2 AS com_apellido2, com.comisión
         FROM ventas.pedido p
@@ -43,7 +43,8 @@ public class PedidoDAOImplements implements PedidoDAO{
                     rs.getString("c_apellido1"),
                     rs.getString("c_apellido2"),
                     rs.getString("ciudad"),
-                    rs.getInt("categoría")
+                    rs.getInt("categoría"),
+                    rs.getString("c_email")
             );
 
             Comercial comercial = new Comercial(
@@ -51,7 +52,7 @@ public class PedidoDAOImplements implements PedidoDAO{
                     rs.getString("com_nombre"),
                     rs.getString("com_apellido1"),
                     rs.getString("com_apellido2"),
-                    rs.getFloat("comisión")
+                    rs.getBigDecimal("comisión")
             );
 
             Pedido pedido = new Pedido();
